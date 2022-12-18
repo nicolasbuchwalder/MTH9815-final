@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
 
     while(true){
     	try{
-            cout << read_socket(socket) << endl;
+            cout << read_socket(socket);
             
     	}
     	catch (boost::system::system_error err) {
