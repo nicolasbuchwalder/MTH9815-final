@@ -1,0 +1,372 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9B60D6AA294AEB290009B60C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9B60D6A2294AEB280009B60C /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9B60D666294AE9FD0009B60C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9B163209294C6EEE00AD40EF /* bondhistoricalinquiryservice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bondhistoricalinquiryservice.hpp; sourceTree = "<group>"; };
+		9B16320C294C886F00AD40EF /* bondhistoricalriskservice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bondhistoricalriskservice.hpp; sourceTree = "<group>"; };
+		9B16320F294C8BC700AD40EF /* bondhistoricalpositionservice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bondhistoricalpositionservice.hpp; sourceTree = "<group>"; };
+		9B1DBA85294EC3C30047CB9A /* bondhistoricalexecutionservice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bondhistoricalexecutionservice.hpp; sourceTree = "<group>"; };
+		9B1DBA87294EC6AC0047CB9A /* bondhistoricalstreamingservice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bondhistoricalstreamingservice.hpp; sourceTree = "<group>"; };
+		9B60D668294AE9FD0009B60C /* tradingsystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tradingsystem; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B60D68E294AEB260009B60C /* algoexecution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = algoexecution.hpp; sourceTree = "<group>"; };
+		9B60D68F294AEB270009B60C /* marketdataservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = marketdataservice.hpp; sourceTree = "<group>"; };
+		9B60D690294AEB270009B60C /* bondinquiryservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondinquiryservice.hpp; sourceTree = "<group>"; };
+		9B60D691294AEB270009B60C /* tradinguniverse.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tradinguniverse.hpp; sourceTree = "<group>"; };
+		9B60D692294AEB270009B60C /* bondstreamingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondstreamingservice.hpp; sourceTree = "<group>"; };
+		9B60D693294AEB270009B60C /* bondguiservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondguiservice.hpp; sourceTree = "<group>"; };
+		9B60D694294AEB270009B60C /* historicaldataservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = historicaldataservice.hpp; sourceTree = "<group>"; };
+		9B60D695294AEB270009B60C /* connectors.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = connectors.hpp; sourceTree = "<group>"; };
+		9B60D696294AEB270009B60C /* bondmarketdataservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondmarketdataservice.hpp; sourceTree = "<group>"; };
+		9B60D697294AEB270009B60C /* soa.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = soa.hpp; sourceTree = "<group>"; };
+		9B60D698294AEB270009B60C /* algostream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = algostream.hpp; sourceTree = "<group>"; };
+		9B60D699294AEB280009B60C /* inquiryservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = inquiryservice.hpp; sourceTree = "<group>"; };
+		9B60D69A294AEB280009B60C /* bondalgoexecutionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondalgoexecutionservice.hpp; sourceTree = "<group>"; };
+		9B60D69B294AEB280009B60C /* bondexecutionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondexecutionservice.hpp; sourceTree = "<group>"; };
+		9B60D69C294AEB280009B60C /* bondtradebookingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondtradebookingservice.hpp; sourceTree = "<group>"; };
+		9B60D69D294AEB280009B60C /* bondriskservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondriskservice.hpp; sourceTree = "<group>"; };
+		9B60D69E294AEB280009B60C /* riskservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = riskservice.hpp; sourceTree = "<group>"; };
+		9B60D69F294AEB280009B60C /* streamingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = streamingservice.hpp; sourceTree = "<group>"; };
+		9B60D6A0294AEB280009B60C /* positionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = positionservice.hpp; sourceTree = "<group>"; };
+		9B60D6A1294AEB280009B60C /* bondpricingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondpricingservice.hpp; sourceTree = "<group>"; };
+		9B60D6A2294AEB280009B60C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9B60D6A3294AEB280009B60C /* tradebookingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tradebookingservice.hpp; sourceTree = "<group>"; };
+		9B60D6A4294AEB290009B60C /* utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = utility.hpp; sourceTree = "<group>"; };
+		9B60D6A5294AEB290009B60C /* bondpositionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondpositionservice.hpp; sourceTree = "<group>"; };
+		9B60D6A6294AEB290009B60C /* pricingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pricingservice.hpp; sourceTree = "<group>"; };
+		9B60D6A7294AEB290009B60C /* executionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = executionservice.hpp; sourceTree = "<group>"; };
+		9B60D6A8294AEB290009B60C /* products.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = products.hpp; sourceTree = "<group>"; };
+		9B60D6A9294AEB290009B60C /* bondalgostreamingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bondalgostreamingservice.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9B60D665294AE9FD0009B60C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9B163206294C6E5000AD40EF /* live */ = {
+			isa = PBXGroup;
+			children = (
+				9B60D69A294AEB280009B60C /* bondalgoexecutionservice.hpp */,
+				9B60D6A9294AEB290009B60C /* bondalgostreamingservice.hpp */,
+				9B60D69B294AEB280009B60C /* bondexecutionservice.hpp */,
+				9B60D693294AEB270009B60C /* bondguiservice.hpp */,
+				9B60D690294AEB270009B60C /* bondinquiryservice.hpp */,
+				9B60D696294AEB270009B60C /* bondmarketdataservice.hpp */,
+				9B60D6A5294AEB290009B60C /* bondpositionservice.hpp */,
+				9B60D6A1294AEB280009B60C /* bondpricingservice.hpp */,
+				9B60D69D294AEB280009B60C /* bondriskservice.hpp */,
+				9B60D692294AEB270009B60C /* bondstreamingservice.hpp */,
+				9B60D69C294AEB280009B60C /* bondtradebookingservice.hpp */,
+			);
+			path = live;
+			sourceTree = "<group>";
+		};
+		9B163207294C6E6100AD40EF /* historical */ = {
+			isa = PBXGroup;
+			children = (
+				9B163209294C6EEE00AD40EF /* bondhistoricalinquiryservice.hpp */,
+				9B16320C294C886F00AD40EF /* bondhistoricalriskservice.hpp */,
+				9B16320F294C8BC700AD40EF /* bondhistoricalpositionservice.hpp */,
+				9B1DBA85294EC3C30047CB9A /* bondhistoricalexecutionservice.hpp */,
+				9B1DBA87294EC6AC0047CB9A /* bondhistoricalstreamingservice.hpp */,
+			);
+			path = historical;
+			sourceTree = "<group>";
+		};
+		9B60D65F294AE9FD0009B60C = {
+			isa = PBXGroup;
+			children = (
+				9B60D6AE294AEB9D0009B60C /* baseclasses */,
+				9B60D6A2294AEB280009B60C /* main.cpp */,
+				9B60D6AC294AEB750009B60C /* bondspecific */,
+				9B60D691294AEB270009B60C /* tradinguniverse.hpp */,
+				9B60D6A4294AEB290009B60C /* utility.hpp */,
+				9B60D669294AE9FD0009B60C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9B60D669294AE9FD0009B60C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9B60D668294AE9FD0009B60C /* tradingsystem */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B60D6AC294AEB750009B60C /* bondspecific */ = {
+			isa = PBXGroup;
+			children = (
+				9B163207294C6E6100AD40EF /* historical */,
+				9B163206294C6E5000AD40EF /* live */,
+			);
+			path = bondspecific;
+			sourceTree = "<group>";
+		};
+		9B60D6AE294AEB9D0009B60C /* baseclasses */ = {
+			isa = PBXGroup;
+			children = (
+				9B60D6A7294AEB290009B60C /* executionservice.hpp */,
+				9B60D694294AEB270009B60C /* historicaldataservice.hpp */,
+				9B60D699294AEB280009B60C /* inquiryservice.hpp */,
+				9B60D68F294AEB270009B60C /* marketdataservice.hpp */,
+				9B60D6A0294AEB280009B60C /* positionservice.hpp */,
+				9B60D6A6294AEB290009B60C /* pricingservice.hpp */,
+				9B60D6A8294AEB290009B60C /* products.hpp */,
+				9B60D69E294AEB280009B60C /* riskservice.hpp */,
+				9B60D697294AEB270009B60C /* soa.hpp */,
+				9B60D69F294AEB280009B60C /* streamingservice.hpp */,
+				9B60D6A3294AEB280009B60C /* tradebookingservice.hpp */,
+				9B60D68E294AEB260009B60C /* algoexecution.hpp */,
+				9B60D698294AEB270009B60C /* algostream.hpp */,
+				9B60D695294AEB270009B60C /* connectors.hpp */,
+			);
+			path = baseclasses;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9B60D667294AE9FD0009B60C /* tradingsystem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B60D66F294AE9FD0009B60C /* Build configuration list for PBXNativeTarget "tradingsystem" */;
+			buildPhases = (
+				9B60D664294AE9FD0009B60C /* Sources */,
+				9B60D665294AE9FD0009B60C /* Frameworks */,
+				9B60D666294AE9FD0009B60C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tradingsystem;
+			productName = tradingsystem;
+			productReference = 9B60D668294AE9FD0009B60C /* tradingsystem */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9B60D660294AE9FD0009B60C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					9B60D667294AE9FD0009B60C = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 9B60D663294AE9FD0009B60C /* Build configuration list for PBXProject "tradingsystem" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9B60D65F294AE9FD0009B60C;
+			productRefGroup = 9B60D669294AE9FD0009B60C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9B60D667294AE9FD0009B60C /* tradingsystem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9B60D664294AE9FD0009B60C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B60D6AA294AEB290009B60C /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9B60D66D294AE9FD0009B60C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.80.0/include;
+				MACOSX_DEPLOYMENT_TARGET = 12.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9B60D66E294AE9FD0009B60C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.80.0/include;
+				MACOSX_DEPLOYMENT_TARGET = 12.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9B60D670294AE9FD0009B60C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZFJNM9X7LQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9B60D671294AE9FD0009B60C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZFJNM9X7LQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9B60D663294AE9FD0009B60C /* Build configuration list for PBXProject "tradingsystem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B60D66D294AE9FD0009B60C /* Debug */,
+				9B60D66E294AE9FD0009B60C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9B60D66F294AE9FD0009B60C /* Build configuration list for PBXNativeTarget "tradingsystem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B60D670294AE9FD0009B60C /* Debug */,
+				9B60D671294AE9FD0009B60C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9B60D660294AE9FD0009B60C /* Project object */;
+}

@@ -1,0 +1,122 @@
+//
+//  bondhistoricalexecutionservice.hpp
+//  tradingsystem
+//
+//  Created by Nicolas Buchwalder on 17.12.22.
+//
+
+#ifndef bondhistoricalexecutionservice_hpp
+#define bondhistoricalexecutionservice_hpp
+
+#include "historicaldataservice.hpp"
+
+/*
+ * BONDHISTORICALEXECUTIONSERVICE CLASS DECLARATION
+ */
+
+class BondHistoricalExecutionService
+    : public HistoricalDataService<ExecutionOrder<Bond>>
+{
+    
+private:
+    Connector<ExecutionOrder<Bond>>* connector;            // publish connector
+    
+    
+public:
+    // constructor
+    BondHistoricalExecutionService(Connector<ExecutionOrder<Bond>>* _connector);
+                                 
+    virtual void PersistData(string persistKey, ExecutionOrder<Bond>& exec_order) override;
+};
+
+
+
+/*
+ * BONDHISTORICALEXECUTIONSERVICELISTENER CLASS DECLARATION
+ */
+
+class BondHistoricalExecutionServiceListener
+: public ServiceListener<ExecutionOrder<Bond>>
+{
+    
+private:
+    BondHistoricalExecutionService* service;  // service to which the listener is attached
+
+public:
+    // constructor
+    BondHistoricalExecutionServiceListener(BondHistoricalExecutionService* _service);
+    // oui
+    virtual void ProcessAdd(ExecutionOrder<Bond>& exec_order) override;
+    // not used
+    virtual void ProcessRemove(ExecutionOrder<Bond>& exec_order) override{};
+    // not used
+    virtual void ProcessUpdate(ExecutionOrder<Bond>& exec_order) override{};
+};
+
+
+
+/*
+ * BONDHISTORICALEXECUTIONCONNECTOR CLASS DECLARATION
+ */
+
+// class that writes files that it received from the GUIService class
+class BondHistoricalExecutionConnector
+: public FilePublishConnector<ExecutionOrder<Bond>>
+{
+public:
+    // constructor
+    BondHistoricalExecutionConnector(const std::string& path);
+    // sets how data from connector is processed to file
+    virtual string ProcessData(ExecutionOrder<Bond>& data) override;
+};
+
+
+
+/*
+ * BONDHISTORICALEXECUTIONSERVICE METHODS DEFINITION
+ */
+
+// constuctor
+BondHistoricalExecutionService::BondHistoricalExecutionService(Connector<ExecutionOrder<Bond>>* _connector)
+: connector(_connector)
+{};
+
+void BondHistoricalExecutionService::PersistData(string persistKey, ExecutionOrder<Bond>& exec_order){
+    connector->Publish(exec_order);
+}
+
+
+
+/*
+ * BONDHISTORICALEXECUTIONSERVICELISTENER METHODS DEFINITION
+ */
+
+// constructor
+BondHistoricalExecutionServiceListener::BondHistoricalExecutionServiceListener(BondHistoricalExecutionService* _service)
+: service(_service)
+{};
+
+void BondHistoricalExecutionServiceListener::ProcessAdd(ExecutionOrder<Bond>& exec_order){
+    service->PersistData(exec_order.GetOrderId(), exec_order);
+}
+
+
+
+/*
+ * BONDHISTORICALEXECUTIONCONNECTOR METHODS DEFINITION
+ */
+
+// constructor
+BondHistoricalExecutionConnector::BondHistoricalExecutionConnector(const std::string& _path)
+: FilePublishConnector("BondHistoricalExecutionConnector", _path)
+{
+    file << "time,exec_order_id,product_id,order_type,pricing_side,price,direction,visible_quantity,hidden_quantity,parent_order_id,is_child_order" << std::endl;
+}
+
+// sets how data from connector is processed to file
+string BondHistoricalExecutionConnector::ProcessData(ExecutionOrder<Bond>& exec_order){
+    return get_local_time() + "," + exec_order.GetOrderId() + "," + exec_order.GetProduct().GetProductId() + "," + "IOC" + "," + pricingside2string(exec_order.GetSide()) + "," + to_string(exec_order.GetPrice()) + "," + to_string(exec_order.GetVisibleQuantity()) + "," + to_string(exec_order.GetHiddenQuantity()) + "," + exec_order.GetParentOrderId() + "," + to_string(exec_order.IsChildOrder());
+}
+
+
+#endif /* bondhistoricalexecutionservice_hpp */
