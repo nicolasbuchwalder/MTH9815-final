@@ -23,6 +23,8 @@
 #include "bondhistoricalexecutionservice.hpp"
 #include "bondhistoricalstreamingservice.hpp"
 
+#include "tradinguniverse.hpp"
+
 #include <iostream>
 #include <thread>
 

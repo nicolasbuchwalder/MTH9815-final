@@ -103,7 +103,7 @@
 		9B60D65F294AE9FD0009B60C = {
 			isa = PBXGroup;
 			children = (
-				9B60D6AE294AEB9D0009B60C /* baseclasses */,
+				9B60D6AE294AEB9D0009B60C /* genericclasses */,
 				9B60D6A2294AEB280009B60C /* main.cpp */,
 				9B60D6AC294AEB750009B60C /* bondspecific */,
 				9B60D691294AEB270009B60C /* tradinguniverse.hpp */,
@@ -129,7 +129,7 @@
 			path = bondspecific;
 			sourceTree = "<group>";
 		};
-		9B60D6AE294AEB9D0009B60C /* baseclasses */ = {
+		9B60D6AE294AEB9D0009B60C /* genericclasses */ = {
 			isa = PBXGroup;
 			children = (
 				9B60D6A7294AEB290009B60C /* executionservice.hpp */,
@@ -147,7 +147,7 @@
 				9B60D698294AEB270009B60C /* algostream.hpp */,
 				9B60D695294AEB270009B60C /* connectors.hpp */,
 			);
-			path = baseclasses;
+			path = genericclasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
