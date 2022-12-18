@@ -3,7 +3,7 @@
 # list of files to run in correct order
 files=(\
     "./dataproviders/bondinquiryprovider/bondinquiryprovider" \
-    #"./dataproviders/bondmarketdataprovider/bondmarketdataprovider" \
+    "./dataproviders/bondmarketdataprovider/bondmarketdataprovider" \
     "./dataproviders/bondtradebookingprovider/bondtradebookingprovider" \
     "./dataproviders/bondpricingprovider/bondpricingprovider" \
     "./tradingsystem/tradingsystem" \
@@ -100,7 +100,7 @@ launch
 launch
 delete_execs
 ;;
---both|-b
+--both|-b)
 delete_execs
 launch
 delete_execs

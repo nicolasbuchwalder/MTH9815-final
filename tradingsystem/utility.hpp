@@ -17,8 +17,9 @@
 
 using namespace std;
 
-// function that converts a decimal number to bond notation number
+// convert a decimal number to bond notation number
 string dec2bond(double price){
+    
     
     int rounded = floor(price);
     int xy = floor((price - rounded) * 32);
@@ -37,7 +38,7 @@ string dec2bond(double price){
     return  rounded_str + "-" + xy_str + z_str;
 }
 
-// function that converts a bond notation number to a decimal number
+// convert a bond notation number to a decimal number
 double bond2dec(string price_str){
     
     vector<string> two_parts;
@@ -52,26 +53,31 @@ double bond2dec(string price_str){
     
 }
 
+// convert string to side enum
 Side string2side(string side){
     if (side == "BUY") return Side::BUY;
     else return Side::SELL;
 }
 
+// convert side enum to string
 string side2string(Side side){
     if (side == Side::BUY) return string("BUY");
     else return string("SELL");
 }
 
+// convert string to pricingside enum
 PricingSide string2pricingside(string side){
     if (side == "BID") return PricingSide::BID;
     else return PricingSide::OFFER;
 }
 
+// convert pricingside enum to string
 string pricingside2string(PricingSide side){
     if (side == PricingSide::BID) return string("BID");
     else return string("OFFER");
 }
 
+// convert string to inquiry enum
 InquiryState string2inquiry(string inquiry){
     if (inquiry=="RECEIVED") return InquiryState::RECEIVED;
     if (inquiry=="QUOTED") return InquiryState::QUOTED;
@@ -82,6 +88,7 @@ InquiryState string2inquiry(string inquiry){
         
 }
 
+// convert inquiry enum to string
 string inquiry2string(InquiryState inquiry){
     switch(inquiry){
         case InquiryState::RECEIVED: return string("RECEIVED");
@@ -94,9 +101,12 @@ string inquiry2string(InquiryState inquiry){
 }
 
 
-//
+// get current time as string
 std::string get_local_time(){
-    return boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time());
+    // get string
+    string time_string = boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time());
+    // remove micro seconds
+    return time_string.substr(0, time_string.length()-3);
 }
 
 #endif /* utility_hpp */

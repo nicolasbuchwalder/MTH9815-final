@@ -15,18 +15,18 @@
  * BONDHISTORICALSTREAMINGSERVICE CLASS DECLARATION
  */
 
+// class that listens to the streaming service to persist data to file
 class BondHistoricalStreamingService
     : public HistoricalDataService<PriceStream<Bond>>
 {
-    
+
 private:
     Connector<PriceStream<Bond>>* connector;            // publish connector
-    
     
 public:
     // constructor
     BondHistoricalStreamingService(Connector<PriceStream<Bond>>* _connector);
-                                 
+    // persist price stream to file
     virtual void PersistData(string persistKey, PriceStream<Bond>& pricestream) override;
 };
 
@@ -36,21 +36,22 @@ public:
  * BONDHISTORICALSTREAMINGSERVICELISTENER CLASS DECLARATION
  */
 
+// service listener attached to streaming service
 class BondHistoricalStreamingServiceListener
 : public ServiceListener<PriceStream<Bond>>
 {
     
 private:
     BondHistoricalStreamingService* service;  // service to which the listener is attached
-
+    // not used
+    virtual void ProcessRemove(PriceStream<Bond>& pricestream) override{};
+    
 public:
     // constructor
     BondHistoricalStreamingServiceListener(BondHistoricalStreamingService* _service);
-    // oui
+    // send to service for pricestream associated with new bond
     virtual void ProcessAdd(PriceStream<Bond>& pricestream) override;
-    // not used
-    virtual void ProcessRemove(PriceStream<Bond>& pricestream) override{};
-    // not used
+    // send to service for pricestream associated with existing bond
     virtual void ProcessUpdate(PriceStream<Bond>& pricestream) override;
 };
 
@@ -60,15 +61,17 @@ public:
  * BONDHISTORICALSTREAMINGCONNECTOR CLASS DECLARATION
  */
 
-// class that writes files that it received from the GUIService class
+// class that writes streams to streaming.txt
 class BondHistoricalStreamingConnector
 : public FilePublishConnector<PriceStream<Bond>>
 {
+private:
+    // sets how data from connector is processed to file
+    virtual string ProcessData(PriceStream<Bond>& data) override;
+    
 public:
     // constructor
     BondHistoricalStreamingConnector(const std::string& path);
-    // sets how data from connector is processed to file
-    virtual string ProcessData(PriceStream<Bond>& data) override;
 };
 
 
@@ -82,6 +85,7 @@ BondHistoricalStreamingService::BondHistoricalStreamingService(Connector<PriceSt
 : connector(_connector)
 {};
 
+// persist price stream to file
 void BondHistoricalStreamingService::PersistData(string persistKey, PriceStream<Bond>& pricestream){
     connector->Publish(pricestream);
 }
@@ -97,10 +101,12 @@ BondHistoricalStreamingServiceListener::BondHistoricalStreamingServiceListener(B
 : service(_service)
 {};
 
+// send to service for price stream associated with new bond
 void BondHistoricalStreamingServiceListener::ProcessAdd(PriceStream<Bond>& pricestream){
     service->PersistData(pricestream.GetProduct().GetProductId(), pricestream);
 }
 
+// send to service for price stream associated with existing bond
 void BondHistoricalStreamingServiceListener::ProcessUpdate(PriceStream<Bond>& pricestream){
     service->PersistData(pricestream.GetProduct().GetProductId(), pricestream);
 }

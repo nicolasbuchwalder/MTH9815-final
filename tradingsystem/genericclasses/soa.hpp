@@ -71,19 +71,29 @@ class Service
 {
     
 protected:
-    unordered_map<K, V> map;  // map
+    unordered_map<K, V> map;  // map of identifier K and data V
     
 public:
+  // checking if key is already in map
   bool ExistingData(K key);
+  // adding data to map on key
   void AddData(K key, V& data);
+  // updating data to existing key
   void UpdateData(K key, V& data);
+  // retriveing data
   V& GetData(K key);
+    
   // The callback that a Connector should invoke for any new or updated data
   virtual void OnMessage(V &data) = 0;
 
 };
 
 
+/*
+ * LISTENEDSERVICE CLASS DECLARATION
+ */
+
+// Service class that has listeners
 template<typename K, typename V>
 class ListenedService
     : public Service<K, V>
@@ -102,21 +112,33 @@ public:
     
 };
 
+
+
+/*
+ * SERVICE METHODS DEFINITION
+ */
+
+// checking if key is already in map
 template<typename K, typename V>
 bool Service<K, V>::ExistingData(K key){
     return map.find(key) != map.end();
 }
 
+// adding data to map on key
 template<typename K, typename V>
 void Service<K, V>::AddData(K key, V& data){
     map.insert(make_pair(key, data));
 }
 
+// updating data to existing key
 template<typename K, typename V>
 void Service<K, V>::UpdateData(K key, V& data){
-    map.insert(make_pair(key, data));
+    auto it = map.find(key);
+    if(it != map.end())
+        it->second = data;
 }
 
+// retriveing data
 template<typename K, typename V>
 V& Service<K, V>::GetData(K key){
     return map.at(key);
@@ -124,11 +146,18 @@ V& Service<K, V>::GetData(K key){
 
 
 
+/*
+ * LISTENEDSERVICE METHODS DEFINITION
+ */
+
+// Add a listener to the Service for callbacks on add, remove, and update events
+// for data to the Service.
 template<typename K, typename V>
 void ListenedService<K, V>::AddListener(ServiceListener<V>* listener){
     listeners.push_back(listener);
 };
 
+// Get all listeners on the Service.
 template<typename K, typename V>
 const vector<ServiceListener<V>*>& ListenedService<K, V>::GetListeners() const{
     return listeners;

@@ -14,6 +14,7 @@
  * BONDHISTORICALEXECUTIONSERVICE CLASS DECLARATION
  */
 
+// class that listens to the execution service to persist data to file
 class BondHistoricalExecutionService
     : public HistoricalDataService<ExecutionOrder<Bond>>
 {
@@ -21,11 +22,10 @@ class BondHistoricalExecutionService
 private:
     Connector<ExecutionOrder<Bond>>* connector;            // publish connector
     
-    
 public:
     // constructor
     BondHistoricalExecutionService(Connector<ExecutionOrder<Bond>>* _connector);
-                                 
+    // persist execution order to file
     virtual void PersistData(string persistKey, ExecutionOrder<Bond>& exec_order) override;
 };
 
@@ -35,22 +35,23 @@ public:
  * BONDHISTORICALEXECUTIONSERVICELISTENER CLASS DECLARATION
  */
 
+// service listener attached to execution service
 class BondHistoricalExecutionServiceListener
 : public ServiceListener<ExecutionOrder<Bond>>
 {
     
 private:
     BondHistoricalExecutionService* service;  // service to which the listener is attached
-
-public:
-    // constructor
-    BondHistoricalExecutionServiceListener(BondHistoricalExecutionService* _service);
-    // oui
-    virtual void ProcessAdd(ExecutionOrder<Bond>& exec_order) override;
     // not used
     virtual void ProcessRemove(ExecutionOrder<Bond>& exec_order) override{};
     // not used
     virtual void ProcessUpdate(ExecutionOrder<Bond>& exec_order) override{};
+    
+public:
+    // constructor
+    BondHistoricalExecutionServiceListener(BondHistoricalExecutionService* _service);
+    // send order to service
+    virtual void ProcessAdd(ExecutionOrder<Bond>& exec_order) override;
 };
 
 
@@ -59,15 +60,17 @@ public:
  * BONDHISTORICALEXECUTIONCONNECTOR CLASS DECLARATION
  */
 
-// class that writes files that it received from the GUIService class
+// class that writes positions to executions.txt
 class BondHistoricalExecutionConnector
 : public FilePublishConnector<ExecutionOrder<Bond>>
 {
+private:
+    // sets how data from connector is processed to file
+    virtual string ProcessData(ExecutionOrder<Bond>& data) override;
 public:
     // constructor
     BondHistoricalExecutionConnector(const std::string& path);
-    // sets how data from connector is processed to file
-    virtual string ProcessData(ExecutionOrder<Bond>& data) override;
+
 };
 
 
@@ -80,7 +83,7 @@ public:
 BondHistoricalExecutionService::BondHistoricalExecutionService(Connector<ExecutionOrder<Bond>>* _connector)
 : connector(_connector)
 {};
-
+// persist execution order to file
 void BondHistoricalExecutionService::PersistData(string persistKey, ExecutionOrder<Bond>& exec_order){
     connector->Publish(exec_order);
 }
@@ -96,6 +99,7 @@ BondHistoricalExecutionServiceListener::BondHistoricalExecutionServiceListener(B
 : service(_service)
 {};
 
+// send order to service
 void BondHistoricalExecutionServiceListener::ProcessAdd(ExecutionOrder<Bond>& exec_order){
     service->PersistData(exec_order.GetOrderId(), exec_order);
 }

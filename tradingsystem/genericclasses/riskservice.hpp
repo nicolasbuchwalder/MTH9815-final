@@ -83,7 +83,7 @@ public:
   virtual void AddPosition(Position<T> &position) = 0;
 
   // Get the bucketed risk for the bucket sector
-  virtual PV01<BucketedSector<T>>& GetBucketedRisk(const BucketedSector<T> &sector) = 0;
+  virtual PV01<BucketedSector<T>> GetBucketedRisk(const BucketedSector<T> &sector) = 0;
 
 };
 

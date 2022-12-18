@@ -29,6 +29,7 @@ using namespace std;
  * BONDALGOEXECUTIONSERVICE CLASS DECLARATION
  */
 
+// class that signals orders algorithmically based on marketdata
 class BondAlgoExecutionService
 : public ListenedService<string, AlgoExecution<Bond>>
 {
@@ -36,18 +37,16 @@ class BondAlgoExecutionService
 private:
     PricingSide side;                                           // pricingside
     
-    
 public:
     // constructor
     BondAlgoExecutionService();
-
-    // sends the price of the bond to next service
-    virtual void OnMessage(AlgoExecution<Bond>& data) override;
-
+    // sends the algo execution to next service
+    virtual void OnMessage(AlgoExecution<Bond>& algoexec) override;
+    // algorithm of execution, which consists of aggressing the book
     void AggressBook(OrderBook<Bond>& orderbook);
-    
+    // return alternative pricing side
     PricingSide GetCurrentSide();
-    
+    // generate alphanumeric random id
     string GenOrderId();
     
 };
@@ -58,22 +57,23 @@ public:
  * BONDALGOEXECUTIONSERVICELISTENER CLASS DECLARATION
  */
 
+// service listener attached to algoexecution service
 class BondAlgoExecutionServiceListener
 : public ServiceListener<OrderBook<Bond>>
 {
     
 private:
     BondAlgoExecutionService* service;          // service attached to connector
-
+    // not used
+    virtual void ProcessRemove(OrderBook<Bond>& orderbook) override{};
+    
 public:
     // constructor
     BondAlgoExecutionServiceListener(BondAlgoExecutionService* service);
-    // only needed, we want to get the key
+    // send to service for orderbook associated with new bond
     virtual void ProcessAdd(OrderBook<Bond>& orderbook) override;
-    // not used
-    virtual void ProcessRemove(OrderBook<Bond>& orderbook) override{};
-    // not used
-    virtual void ProcessUpdate(OrderBook<Bond>& orderbook) override{};
+    // send to service for orderbook associated with existing bond
+    virtual void ProcessUpdate(OrderBook<Bond>& orderbook) override;
 };
 
 
@@ -82,11 +82,12 @@ public:
  * BONDALGOEXECUTIONSERVICE METHODS DEFINITION
  */
 
+// constructor
 BondAlgoExecutionService::BondAlgoExecutionService()
     : side(PricingSide::BID)
 {};
 
-// sends the price of the bond to listeners
+// sends the algo execution of the bond to listeners
 void BondAlgoExecutionService::OnMessage(AlgoExecution<Bond>& algoexec){
     string trade_id = algoexec.GetExecutionOrder().GetOrderId();
     AddData(trade_id, algoexec);
@@ -94,10 +95,13 @@ void BondAlgoExecutionService::OnMessage(AlgoExecution<Bond>& algoexec){
         listener->ProcessAdd(algoexec);
     }
 };
-
+// algorithm of execution, which consists of aggressing the book
 void BondAlgoExecutionService::AggressBook(OrderBook<Bond>& orderbook){
+    // checking if spread tight enough
     if (orderbook.GetTopSpread() <= 1. / 128.){
+        // attributing side
         PricingSide side = GetCurrentSide();
+        // generating order
         ExecutionOrder new_order(orderbook.GetProduct(), side, GenOrderId(), OrderType::IOC, orderbook.GetTopAgainstPrice(side), orderbook.GetTopAgainstQuantity(side), 0, "N/A", false);
         AlgoExecution<Bond> algoexec(new_order);
         OnMessage(algoexec);
@@ -105,10 +109,13 @@ void BondAlgoExecutionService::AggressBook(OrderBook<Bond>& orderbook){
     
 }
 
+// return alternative pricing side
 PricingSide BondAlgoExecutionService::GetCurrentSide(){
     side = (side == PricingSide::OFFER) ? PricingSide::BID : PricingSide::OFFER;
     return side;
 }
+
+// generate alphanumeric random id
 string BondAlgoExecutionService::GenOrderId(){
     auto randchar = []() -> char
     {
@@ -133,9 +140,15 @@ BondAlgoExecutionServiceListener::BondAlgoExecutionServiceListener(BondAlgoExecu
 : service(service)
 {};
 
+// send to service for orderbook associated with new bond
 void BondAlgoExecutionServiceListener::ProcessAdd(OrderBook<Bond>& orderbook){
     service->AggressBook(orderbook);
 }
+// send to service for orderbook associated with existing bond
+void BondAlgoExecutionServiceListener::ProcessUpdate(OrderBook<Bond>& orderbook){
+    service->AggressBook(orderbook);
+}
+
 
 
 #endif /* bondalgoexecutionservice_hpp */

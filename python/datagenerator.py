@@ -5,13 +5,15 @@ import pandas as pd
 import random
 import string
 
+root_dir = os.path.dirname(os.path.dirname(__file__))
 # CONFIG
 tickers = ["91282CFX4", "91282CFW6", "91282CFZ9", "91282CFY2", "91282CFV8", "912810TM0", "912810TL2"]
 books = ["TRSY1", "TRSY2", "TRSY3"]
-pricing_path = os.path.join(os.getcwd(), "bondpricingprovider", "prices.txt")
-tradebooking_path = os.path.join(os.getcwd(), "bondtradebookingprovider", "trades.txt")
-marketdata_path = os.path.join(os.getcwd(), "bondmarketdataprovider", "marketdata.txt")
-inquiry_path = os.path.join(os.getcwd(), "bondinquiryprovider", "inquiries.txt")
+data_dir = os.path.join(root_dir, "dataproviders")
+pricing_path = os.path.join(data_dir, "bondpricingprovider", "prices.txt")
+tradebooking_path = os.path.join(data_dir, "bondtradebookingprovider", "trades.txt")
+marketdata_path = os.path.join(data_dir, "bondmarketdataprovider", "marketdata.txt")
+inquiry_path = os.path.join(data_dir, "bondinquiryprovider", "inquiries.txt")
 
 
 

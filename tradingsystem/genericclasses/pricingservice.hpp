@@ -21,7 +21,7 @@ class Price
 public:
 
   // ctor for a price
-  Price(const T &_product, double _mid, double _bidOfferSpread);
+  Price(T &_product, double _mid, double _bidOfferSpread);
 
   // Get the product
   const T& GetProduct() const;
@@ -33,7 +33,7 @@ public:
   double GetBidOfferSpread() const;
 
 private:
-  const T& product;
+  T product;
   double mid;
   double bidOfferSpread;
 
@@ -50,7 +50,7 @@ class PricingService : public ListenedService<string, Price <T> >
 };
 
 template<typename T>
-Price<T>::Price(const T &_product, double _mid, double _bidOfferSpread) :
+Price<T>::Price(T &_product, double _mid, double _bidOfferSpread) :
   product(_product)
 {
   mid = _mid;

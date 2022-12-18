@@ -26,7 +26,7 @@ using namespace std;
  BONDPRICINGSERVICE CLASS DECLARATION
  */
 
-
+// service that listens to prices and processes it
 class BondPricingService
 : public PricingService<Bond>
 {
@@ -44,16 +44,16 @@ public:
  BONDPRICINGCONNECTOR CLASS DECLARATION
  */
 
-
+// class that reads data from socket
 class BondPricingConnector
 : public SocketReadConnector<Price<Bond>>
 {
+private:
+    // sets how data from connector is processed to service
+    virtual Price<Bond> ProcessData(const vector<string>& row) override;
 public:
     // constructor
     BondPricingConnector(BondPricingService* _service, const string _raw_address, const int _port_number);
-    // sets the onmessage function of the service
-
-    virtual Price<Bond> ProcessData(const vector<string>& row) override;
 };
 
 
@@ -85,13 +85,13 @@ void BondPricingService::OnMessage(Price<Bond>& price){
  BONDPRICINGCONNECTOR METHODS DEFINITION
  */
 
-
+// constructor
 BondPricingConnector::BondPricingConnector(BondPricingService* _service, const string _raw_address, const int _port_number)
 
 : SocketReadConnector("BondPricingConnector", _service, _raw_address, _port_number)
 {};
 
-
+// sets how data from connector is processed to service
  Price<Bond> BondPricingConnector::ProcessData(const vector<string>& row){
      return Price<Bond>(productmap.at(row[0]), bond2dec(row[1]), bond2dec(row[2]));
 }

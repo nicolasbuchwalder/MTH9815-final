@@ -25,7 +25,7 @@ using namespace std;
  BONDINQUIRYSERVICE CLASS DECLARATION
  */
 
-
+// service that listens to inquiries and processes it
 class BondInquiryService
 : public InquiryService<Bond>
 {
@@ -33,11 +33,11 @@ class BondInquiryService
 public:
     // constructor
     BondInquiryService() = default;
-    // sends the price of the bond to listeners
-    virtual void OnMessage(Inquiry<Bond>& data) override;
-    // Send a quote back to the client
+    // sends the inquiries to next service
+    virtual void OnMessage(Inquiry<Bond>& inquiry) override;
+    // send a quote back to the client
     virtual void SendQuote(const string &inquiryId, double price) override;
-    // Reject an inquiry from the client
+    // reject an inquiry from the client
     virtual void RejectInquiry(const string &inquiryId) override;
 };
 
@@ -46,19 +46,20 @@ public:
  BONDINQUIRYSERVICELISTENER CLASS DECLARATION
  */
 
+// service listener attached to inquiry service
 class BondInquiryServiceListener
     : public ServiceListener<Inquiry<Bond>>
 {
 private:
     BondInquiryService* service;                // service to which the listener is attached
+    // not used
+    virtual void ProcessRemove(Inquiry<Bond>& inquiry) override{};
 public:
     // constructor
     BondInquiryServiceListener(BondInquiryService* _service);
-    // not needed
+    // if new inquiry arrives
     virtual void ProcessAdd(Inquiry<Bond>& inquiry) override;
-    // not used
-    virtual void ProcessRemove(Inquiry<Bond>& inquiry) override{};
-    // quotes the inquiry if state is received or sets it to done if quoted
+    // sets it to done if quoted, ignores it if done
     virtual void ProcessUpdate(Inquiry<Bond>& inquiry) override;
 };
 
@@ -68,16 +69,18 @@ public:
  BONDINQUIRYCONNECTOR CLASS DECLARATION
  */
 
-
+// class that reads data from socket
 class BondInquiryConnector
 : public SocketReadConnector<Inquiry<Bond>>
 {
+private:
+    // sets how data from connector is processed to service
+    virtual Inquiry<Bond> ProcessData(const vector<string>& row) override;
+    
 public:
     // constructor
     BondInquiryConnector(BondInquiryService* _service, const string _raw_address, const int _port_number);
-    // sets the onmessage function of the service
 
-    virtual Inquiry<Bond> ProcessData(const vector<string>& row) override;
 };
 
 
@@ -86,11 +89,12 @@ public:
  BONDINQUIRYSERVICE METHODS DEFINITION
  */
 
-// sends the price of the bond to listeners
+// sends the inquiries to next service
 void BondInquiryService::OnMessage(Inquiry<Bond>& inquiry){
     
     string inquiry_id = inquiry.GetInquiryId();
     InquiryState inquiry_state = inquiry.GetState();
+    
     switch(inquiry_state){
             
         case InquiryState::RECEIVED:
@@ -115,15 +119,17 @@ void BondInquiryService::OnMessage(Inquiry<Bond>& inquiry){
     }
 }
 
-
+// send a quote back to the client
 void BondInquiryService::SendQuote(const string &inquiryId, double price){
     Inquiry inquiry(GetData(inquiryId));
     inquiry.SetPrice(price);
+    // emulate the trader that needs to quote
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     inquiry.UpdateState(InquiryState::QUOTED);
     OnMessage(inquiry);
 }
 
+// reject an inquiry from the client
  void BondInquiryService::RejectInquiry(const string &inquiryId){
      Inquiry inquiry(GetData(inquiryId));
      inquiry.UpdateState(InquiryState::REJECTED);
@@ -136,16 +142,17 @@ void BondInquiryService::SendQuote(const string &inquiryId, double price){
  BONDINQUIRYSERVICELISTENER METHODS DEFINITION
  */
 
+// constructor
 BondInquiryServiceListener::BondInquiryServiceListener(BondInquiryService* _service)
     : service(_service)
 {};
 
-
+// if new inquiry arrives
 void BondInquiryServiceListener::ProcessAdd(Inquiry<Bond>& inquiry){
     service->SendQuote(inquiry.GetInquiryId(), 100.);
 }
 
-
+// sets it to done if quoted, ignores it if done
 void BondInquiryServiceListener::ProcessUpdate(Inquiry<Bond>& inquiry){
     if (inquiry.GetState() == InquiryState::QUOTED) {
         inquiry.UpdateState(InquiryState::DONE);
@@ -159,13 +166,13 @@ void BondInquiryServiceListener::ProcessUpdate(Inquiry<Bond>& inquiry){
  BONDINQUIRYCONNECTOR METHODS DEFINITION
  */
 
-
+// constructor
 BondInquiryConnector::BondInquiryConnector(BondInquiryService* _service, const string _raw_address, const int _port_number)
 
 : SocketReadConnector("BondInquiryConnector", _service, _raw_address, _port_number)
 {};
 
-
+// sets how data from connector is processed to service
 Inquiry<Bond> BondInquiryConnector::ProcessData(const vector<string>& row){
     return Inquiry(row[0], productmap.at(row[2]), string2side(row[3]), stol(row[4]), 0, string2inquiry(row[1]));
 }

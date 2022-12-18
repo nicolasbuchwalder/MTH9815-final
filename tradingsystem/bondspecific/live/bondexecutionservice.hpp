@@ -26,6 +26,7 @@ using namespace std;
  * BONDEXECUTIONSERVICE CLASS DECLARATION
  */
 
+// class that executes orders and distributed it
 class BondExecutionService
 : public ExecutionService<Bond>
 {
@@ -36,9 +37,9 @@ private:
 public:
     // constructor
     BondExecutionService(Connector<ExecutionOrder<Bond>>* _connector);
-    
+    // sends the order to next service
     virtual void OnMessage(ExecutionOrder<Bond>& exec_order) override;
-    
+    // executing order
     void ExecuteOrder(ExecutionOrder<Bond>& order, Market market) override;
 };
 
@@ -48,22 +49,23 @@ public:
  * BONDEXECUTIONSERVICELISTENER CLASS DECLARATION
  */
 
+// service listener attached to execution service
 class BondExecutionServiceListener
 : public ServiceListener<AlgoExecution<Bond>>
 {
     
 private:
     BondExecutionService* service;  // service to which the listener is attached
-
+    // not used
+    virtual void ProcessRemove(AlgoExecution<Bond>& algoexec) override{};
+    // not used
+    virtual void ProcessUpdate(AlgoExecution<Bond>& algoexec) override{};
 public:
     // constructor
     BondExecutionServiceListener(BondExecutionService* _service);
-    // if price does not exist already
+    // send to service for a new algo exec
     virtual void ProcessAdd(AlgoExecution<Bond>& algoexec) override;
-    // not used
-    virtual void ProcessRemove(AlgoExecution<Bond>& algoexec) override{};
-    // if price exist
-    virtual void ProcessUpdate(AlgoExecution<Bond>& algoexec) override{};
+    
 };
 
 
@@ -72,15 +74,18 @@ public:
  * BONDEXECUTIONCONNECTOR CLASS DECLARATION
  */
 
-// class that writes files that it received from the GUIService class
+// class that publishes executions to socket
 class BondExecutionConnector
 : public SocketPublishConnector<ExecutionOrder<Bond>>
 {
+private:
+    // sets how data from connector is processed to socket
+    virtual string ProcessData(ExecutionOrder<Bond>& pricestream) override;
+    
 public:
     // constructor
     BondExecutionConnector(const string _raw_address, const int _port_number);
-    // sets how data from connector is processed to file
-    virtual string ProcessData(ExecutionOrder<Bond>& pricestream) override;
+
 };
 
 
@@ -95,7 +100,7 @@ BondExecutionService::BondExecutionService(Connector<ExecutionOrder<Bond>>* _con
 {};
 
 
-// sends the price of the bond to listeners
+// sends the order to next service and signals connector
 void BondExecutionService::OnMessage(ExecutionOrder<Bond>& exec_order){
     AddData(exec_order.GetProduct().GetProductId(), exec_order);
     for (auto& listener : listeners){
@@ -103,9 +108,8 @@ void BondExecutionService::OnMessage(ExecutionOrder<Bond>& exec_order){
     }
     connector->Publish(exec_order);
 }
-
+// executing order
 void BondExecutionService::ExecuteOrder(ExecutionOrder<Bond>& order, Market market){
-    
     OnMessage(order);
 }
 
@@ -119,7 +123,9 @@ BondExecutionServiceListener::BondExecutionServiceListener(BondExecutionService*
 : service(_service)
 {};
 
+// send to service for a new algo exec
 void BondExecutionServiceListener::ProcessAdd(AlgoExecution<Bond>& algoexec){
+    // we assume only one market
     service->ExecuteOrder(algoexec.GetExecutionOrder(), Market::CME);
 }
 

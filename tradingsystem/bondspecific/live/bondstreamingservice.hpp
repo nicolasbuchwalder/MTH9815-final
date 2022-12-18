@@ -27,21 +27,20 @@ using namespace std;
  * BONDSTREAMINGSERVICE CLASS DECLARATION
  */
 
+// class that streams prices and distributed it
 class BondStreamingService
 : public StreamingService<Bond>
 {
     
 private:
     Connector<PriceStream<Bond>>* connector;            // publish connector
-    unordered_map<string, PriceStream<Bond>> map;       // map for prices
 
-    
 public:
     // constructor
     BondStreamingService(Connector<PriceStream<Bond>>* _connector);
+    // sends the stream to next service
     virtual void OnMessage(PriceStream<Bond>& data) override;
-    
-    // publish method
+    // publish prices
     void PublishPrice(const PriceStream<Bond>& priceStream) override{};
 };
 
@@ -57,15 +56,15 @@ class BondStreamingServiceListener
     
 private:
     BondStreamingService* service;  // service to which the listener is attached
-
+    // not needed
+    virtual void ProcessRemove(AlgoStream<Bond>& algostream) override{};
+    
 public:
     // constructor
     BondStreamingServiceListener(BondStreamingService* _service);
-    // if price does not exist already
+    // send to service for streams associated with new bond
     virtual void ProcessAdd(AlgoStream<Bond>& algostream) override;
-    // not used
-    virtual void ProcessRemove(AlgoStream<Bond>& algostream) override{};
-    // if price exist
+    // send to service for streams associated with existing bond
     virtual void ProcessUpdate(AlgoStream<Bond>& algostream) override;
 };
 
@@ -75,15 +74,18 @@ public:
  * BONDSTREAMINGCONNECTOR CLASS DECLARATION
  */
 
-// class that writes files that it received from the GUIService class
+// class that publishes executions to socket
 class BondStreamingConnector
 : public SocketPublishConnector<PriceStream<Bond>>
 {
+private:
+    // sets how data from connector is processed to file
+    virtual string ProcessData(PriceStream<Bond>& pricestream) override;
+    
 public:
     // constructor
     BondStreamingConnector(const string _raw_address, const int _port_number);
-    // sets how data from connector is processed to file
-    virtual string ProcessData(PriceStream<Bond>& pricestream) override;
+
 };
 
 
@@ -98,7 +100,7 @@ BondStreamingService::BondStreamingService(Connector<PriceStream<Bond>>* _connec
 {};
 
 
-// sends the price of the bond to listeners
+// sends the stream to next service
 void BondStreamingService::OnMessage(PriceStream<Bond>& pricestream){
     AddData(pricestream.GetProduct().GetProductId(), pricestream);
     for (auto& listener : listeners){
@@ -118,10 +120,12 @@ BondStreamingServiceListener::BondStreamingServiceListener(BondStreamingService*
 : service(_service)
 {};
 
+// send to service for streams associated with new bond
 void BondStreamingServiceListener::ProcessAdd(AlgoStream<Bond>& algostream){
     service->OnMessage(algostream.GetPriceStream());
 }
 
+// send to service for streams associated with existing bond
 void BondStreamingServiceListener::ProcessUpdate(AlgoStream<Bond>& algostream){
     service->OnMessage(algostream.GetPriceStream());
 }

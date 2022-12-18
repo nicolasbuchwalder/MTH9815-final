@@ -67,7 +67,7 @@ int main(int argc, const char * argv[]) {
     // read connectors
     BondPricingConnector con_read_price(&ser_pricing, "127.0.0.1", 10000);
     BondTradeBookingConnector con_read_trades(&ser_trade, "127.0.0.1", 10001);
-    //BondMarketDataConnector con_read_market(&ser_marketdata, "127.0.0.1", 10002);
+    BondMarketDataConnector con_read_market(&ser_marketdata, "127.0.0.1", 10002);
     BondInquiryConnector con_read_inquiry(&ser_inquiry, "127.0.0.1", 10003);
     
     // listeners
@@ -111,13 +111,14 @@ int main(int argc, const char * argv[]) {
     
     thread pricing_thread(&BondPricingConnector::Read, &con_read_price);
     thread trades_thread(&BondTradeBookingConnector::Read, &con_read_trades);
-    //thread marketdata_thread(&BondMarketDataConnector::Read, &con_read_market);
+    thread marketdata_thread(&BondMarketDataConnector::Read, &con_read_market);
     thread inquiry_thread(&BondInquiryConnector::Read, &con_read_inquiry);
     
     if (inquiry_thread.joinable()) inquiry_thread.join();
-    //if (marketdata_thread.joinable()) marketdata_thread.join();
+    if (marketdata_thread.joinable()) marketdata_thread.join();
     if (trades_thread.joinable()) trades_thread.join();
     if (pricing_thread.joinable()) pricing_thread.join();
     
+    cout << "TradingSystem has successfully completed all its tasks, shutting down..." << endl;
     
 }

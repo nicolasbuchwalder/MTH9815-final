@@ -29,6 +29,7 @@ using namespace std;
  * BONDGUISERVICE CLASS DECLARATION
  */
 
+// class that listens to the prices and post it to the GUI
 class BondGUIService
 : public Service<string, Price<Bond>>
 {
@@ -47,7 +48,7 @@ public:
     // constructor
     BondGUIService(FilePublishConnector<Price<Bond>>* _connector, int _throttle, int _max_count);
     // sends the price of the bond to connector
-    virtual void OnMessage(Price<Bond>& data) override;
+    virtual void OnMessage(Price<Bond>& price) override;
     
 };
 
@@ -63,16 +64,15 @@ class BondGUIServiceListener
     
 private:
     BondGUIService* service;                // service to which the listener is attached
-
-
+    // not used
+    virtual void ProcessRemove(Price<Bond>& price) override{};
+    
 public:
     // constructor
     BondGUIServiceListener(BondGUIService* _service);
-    // if price does not exist already
+    // send to service for price associated with new bond
     virtual void ProcessAdd(Price<Bond>& price) override;
-    // not used
-    virtual void ProcessRemove(Price<Bond>& price) override{};
-    // if price exist
+    // send to service for price associated with existing bond
     virtual void ProcessUpdate(Price<Bond>& price) override;
 };
 
@@ -86,11 +86,13 @@ public:
 class BondGUIConnector
 : public FilePublishConnector<Price<Bond>>
 {
+private:
+    // sets how data from connector is processed to file
+    virtual string ProcessData(Price<Bond>& data) override;
+    
 public:
     // constructor
     BondGUIConnector(const std::string& path);
-    // sets how data from connector is processed to file
-    virtual string ProcessData(Price<Bond>& data) override;
 };
 
 
@@ -108,13 +110,16 @@ BondGUIService::BondGUIService(FilePublishConnector<Price<Bond>>* _connector, in
 // sends the price of the bond to listeners
 void BondGUIService::OnMessage(Price<Bond>& price){
     AddData(price.GetProduct().GetProductId(), price);
+    // constructing new lines for gui until max lines
     if (counter < max_count){
         connector->Publish(price);
         counter++;
     }
     else{
+        // if already waiting, checking if wait is not over
         if (wait){
             if ((std::chrono::steady_clock::now() - wait_start) >= throttle){
+                // clearing file and resetting everything
                 connector->ClearFile();
                 wait = false;
                 wait_start = std::chrono::steady_clock::now();
@@ -122,17 +127,17 @@ void BondGUIService::OnMessage(Price<Bond>& price){
             }
         }
         else {
+            // if connected just initialized now, begin loop
             if (counter == -1){
                 connector->Publish(price);
                 counter = 1;
             }
+            // if gui got to max lines and needs to start to wait
             else {
                 wait = true;
             }
-            
         }
     }
-    
 }
 
 
@@ -146,10 +151,12 @@ BondGUIServiceListener::BondGUIServiceListener(BondGUIService* _service)
 : service(_service)
 {}
 
+// send to service for price associated with new bond
 void BondGUIServiceListener::ProcessAdd(Price<Bond>& price){
     service->OnMessage(price);
 }
 
+// send to service for price associated with existing bond
 void BondGUIServiceListener::ProcessUpdate(Price<Bond>& price){
     service->OnMessage(price);
 }
