@@ -1,7 +1,0 @@
-Questions
-
-TradeBooking: What is booktrade for? Exactly the same as OnMessage
-Streaming: same for publish-rice
-    boost::asio::streambuf buf;
-    boost::asio::read_until(socket, buf, "\n");
-
