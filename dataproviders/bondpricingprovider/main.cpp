@@ -30,7 +30,7 @@ int main(int argc, const char * argv[]) {
     const int port_number = 10000;
     string raw_address = "127.0.0.1";
     string path = "dataproviders/bondpricingprovider/prices.txt";
-    int refresh_rate_ms = 1000;
+    int refresh_rate_ms = 50;
     
     io_service io_service;
     tcp::acceptor acceptor(io_service, tcp::endpoint(address::from_string(raw_address), port_number));
