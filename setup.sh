@@ -78,9 +78,12 @@ function launch() {
 }
 
 function delete_execs(){
-    if [ -f "$file" ] ; then
-        rm "$file"
-    fi
+    for ((i = 0; i < ${#files[@]}; i++)); do
+        if [ -f "${files[$i]}" ] ; then
+            rm "${files[$i]}"
+        fi
+    done
+    
 }
 function help() {
     echo "commands:"

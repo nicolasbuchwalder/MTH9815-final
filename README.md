@@ -50,7 +50,7 @@ The project is structured as follows:
     - bondspecific/ : contains the classes implemented specifically for bond trading
     - data/ : folder where all the historical data and gui data of the trading system are written to and stored
 - python/ : folder where the python scripts for data generation and cubic spline are stored (see "Bonds Data for more details")
-    
+- makefile: there is a makefile associated with all the main.cpp files are well as one makefile in the root folder, those contain the compilation instructions
 
 ## Documentation of project
 ### Modifications on given original tradingsystem code
@@ -59,13 +59,13 @@ In soa.hpp, I modified the implementation of the Service class as follows:
 1. I added a proctected unordered map member so that every derived service can identity its specific data (Product, OrderBook, PV01, etc..) automatically via the map
 2. I added the following public methods:
     - ExistingData: checking if its already in the map
-    - AddData: adding data to map
+    - AddData: adding data to map with specific 
     - UpdateData: modifying data linked to key
-    - GetData has been implemented here so it doesnt need to be set in derived classes
+    - GetData: returns data stored under a certain key (it has been implemented here as well so it doesnt need to be set in derived classes)
 3. I only kept OnMessage method as pure here as some services do not have listeners (GUI for example). This prevents a bizarre design choice of setting the pure virtual functions to nothing in some derived classes
 4. I created a ListenedService class which is derived from Service and that will be used by services that have listeners. It has a protected template vector of listeners, the AddListener and GetListeners are defined here so that they don't need to be defined in derived classes.
 5. All given original generic classes now inherit from ListenedService instead of Service (except historical as it does not have listeners)
-6. HistoricalDataService defined the OnMessage message as blank as its replaced by the persistdata method
+6. HistoricalDataService defined the OnMessage message as blank as its replaced by the PersistData method
 
 
 #### Connectors
@@ -80,6 +80,15 @@ All have pretty much the same structure that is enforced from the Service, Servi
 1. BondTradeBookingService and BondHistoricalPostionService must be initialized with the vector of trading book names so that they can respectively decide how trades are attributed to books and store positions for all books to positions.txt
 2. BondGUIService initializer has the throttle time (in seconds) and the number of lines as arguments to set the how quickly the file is cleared to new content of a certain number of lines
 3. BondRiskService redefines the inherited vector of listener pointers to specifically a vector of HistoricalRiskServiceListener pointers (as well as its related methods AddListener and GetListeners) as this derived listener class has the inherited ProcessAdd and ProcessUpdate methods for PV01 of Bonds but also for PV01 of SectorBucket (which the base class does not have). It also has a OnMessageBucket to call its sectorbucket listeners.
+4. Both the new AlgoExecution and AlgoStreaming classes are just containers of ExecutionOrder and PriceStream classes. As this was specified, I implemented it but with such simple Algorithms for execution and streaming (see below) I am not sure those classes were really necessary.
+5. The BondInquiryService is the only service that has a listener on itself to modify the state of the inquiry after calling the OnMessage method
+### Algos
+The algorithms for executing orders, streaming prices, setting inquiries and evaluating risk are the following:
+- BondAlgoExecutionService: the service checks if, for the current orderbook of the bond given by the BondMarketDataService, the spread on the top level is 1/128 or less. If that is the case, it buys or sells the full quantity of the related bid or offer on top of the book. It alternates by first buying, then selling, then buying again, etc..
+- BondAlgoStreamingService: the service gets the prices from the BondPricingService and sets alternatively the visible quantity between 100000 and 200000, and a corresponding hidden quantity at two times the visible quantity
+- BondInquirySerice: the service gets the inqiury with a "RECEIVED" state, then the OnMessage sends it to its own listener with ProcessAdd method, which modifies the state to "QUOTED", sets the price of the inquiry to 100 every time and calls OnMessage. OnMessage calls now ProcessUpdate as the inquiry is in the map of the class. The listener sets the inquiry to "DONE" from the ProcessUpdate method (only if the current state is "QUOTED") and calls again OnMessage. OnMessage will call again ProcessUpdate of its listener but as the Inquiry status is set to "DONE" and does not call OnMessage again.
+- BondRiskService: the PV01 of the bucket are calculated as the weighted average of the PV01 of its constituents (the weight is the position of each)
+
 ## Parallel Processes
 ### Data Providers
 The 4 data providers in the dataproviders profile only send data at a certain rate (defined by the refresh_rate_ms variable). Without that, the connectors that read the socket had errors (seems to be a bug of boost::asio?). I set the frequency of inquiries and trades at 1 per second (so refresh_rate_ms=1000) so that is happends all along the project. The others are set to 20 per second (so refresh_rate_ms=50). This can be changed if necessary  
@@ -87,6 +96,7 @@ The 4 data providers in the dataproviders profile only send data at a certain ra
 ## Data Generation
 I generated the data from the datagenerator.py script in the python folder
 As said above, both the marketdata and prices files only have 7000 rows instead of 7m. 
+For the prices, marketdata and trades, the data is generated sequentially for each bond, so first data of first bond, then second, etc..
 ## Bonds data
 The CUSIP come from the following website: [https://treasurydirect.gov/auctions/auction-query/](https://treasurydirect.gov/auctions/auction-query/)
 The coupon and PV01 data comes from the following website: [https://eiptrading.com/risk-management/](https://eiptrading.com/risk-management/)
